@@ -36,7 +36,7 @@ fn parallaxMapping(V: vec3<f32>, uv: vec2<f32>, parallaxHeight: f32) -> vec2<f32
     texCoordOffset = parallaxScale * V.xz * initialHeight;
 
     // Return modified texture coordinates
-    return uv - texCoordOffset;
+    return uv + texCoordOffset;
 }
 
 @fragment
@@ -46,7 +46,7 @@ fn fragment(in: VertexOutput,
     let sample_index = 0u;
     let depth = prepass_depth(in.position, sample_index);
 
-    let diff_depth = abs(in.position.z - depth);
+    let diff_depth = depth - in.position.z;
 
     let ray = normalize(view.world_position  - in.world_position.xyz) ;
     var new_in = in;
@@ -66,11 +66,11 @@ fn fragment(in: VertexOutput,
     let alpha = clamp(1.0 - diff_depth * 400.0, 0.0, 1.0);
 
     // depth mask
-    return vec4(vec3(alpha), 1.0);
+    //return vec4(vec3(alpha), 1.0);
 
     // just distortion
     //return vec4(color, 1.0);
 
     // regular
-    //return vec4(color, alpha);
+    return vec4(color, alpha );
 }
