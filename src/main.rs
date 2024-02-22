@@ -100,7 +100,6 @@ fn setup(
             }),
             ..default()
         },
-        NotShadowReceiver,
         NotShadowCaster,
     ));
 
@@ -125,7 +124,6 @@ fn setup(
             }),
             ..default()
         },
-        NotShadowReceiver,
         NotShadowCaster,
     ));
 
@@ -150,7 +148,6 @@ fn setup(
             }),
             ..default()
         },
-        NotShadowReceiver,
         NotShadowCaster,
     ));
 
@@ -175,7 +172,6 @@ fn setup(
             ..default()
         },
         NotShadowCaster,
-        NotShadowReceiver,
     ));
 
     commands.spawn((
@@ -199,7 +195,6 @@ fn setup(
             ..default()
         },
         NotShadowCaster,
-        NotShadowReceiver,
     ));
 
     commands.spawn((
@@ -223,7 +218,6 @@ fn setup(
             ..default()
         },
         NotShadowCaster,
-        NotShadowReceiver,
     ));
 
     commands.spawn((
@@ -247,7 +241,6 @@ fn setup(
             ..default()
         },
         NotShadowCaster,
-        NotShadowReceiver,
     ));
 
     commands.spawn((
@@ -270,7 +263,6 @@ fn setup(
             }),
             ..default()
         },
-        NotShadowReceiver,
         NotShadowCaster,
     ));
 

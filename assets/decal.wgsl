@@ -26,7 +26,7 @@ struct CustomMaterial {
 var<uniform> custom_material: CustomMaterial;
 
 fn parallaxMapping(V: vec3<f32>, uv: vec2<f32>, parallaxHeight: f32) -> vec2<f32> {
-    let parallaxScale = 200.2;
+    let parallaxScale = 160.0;
     var initialHeight: f32 = parallaxHeight;
 
     // Calculate amount of offset for Parallax Mapping
@@ -56,6 +56,8 @@ fn fragment(in: VertexOutput,
 
     var pbr_input = pbr_input_from_standard_material(new_in, is_front);
     pbr_input.material.base_color = alpha_discard(pbr_input.material, pbr_input.material.base_color);
+    let ray2 =  normalize(in.world_position.xyz - view.world_position);
+    pbr_input.world_position = vec4(in.world_position.xyz - (ray2 * diff_depth * 600.0) , depth);
 
     var out: FragmentOutput;
     out.color = apply_pbr_lighting(pbr_input);
@@ -63,11 +65,13 @@ fn fragment(in: VertexOutput,
     
 
     //let alpha = smoothstep(0.0, 1.0, 1.0 - diff_depth * 400.0);
-    var alpha = min(clamp(1.0 - diff_depth * 300.0 , 0.0, 1.0), out.color.a);
+    var alpha = min(clamp(1.0 - diff_depth * 600.0 , 0.0, 1.0), out.color.a);
     let color =  out.color.rgb;
     if alpha < 0.1 {
       alpha = 0.0;
     }
+
+    //return out.color;
 
     // depth mask
     //return vec4(vec3(alpha), 1.0);
