@@ -26,7 +26,7 @@ struct CustomMaterial {
 var<uniform> custom_material: CustomMaterial;
 
 fn parallaxMapping(V: vec3<f32>, uv: vec2<f32>, parallaxHeight: f32) -> vec2<f32> {
-    let parallaxScale = 400.2;
+    let parallaxScale = 200.2;
     var initialHeight: f32 = parallaxHeight;
 
     // Calculate amount of offset for Parallax Mapping
@@ -46,13 +46,13 @@ fn fragment(in: VertexOutput,
     let sample_index = 0u;
     let depth = prepass_depth(in.position, sample_index);
 
-    let diff_depth = depth - in.position.z;
+    let diff_depth = abs(in.position.z - depth);
 
     let ray = normalize(view.world_position  - in.world_position.xyz) ;
     var new_in = in;
     //let center_pos_xz = custom_material.center_pos.xz;
     let local_space = in.world_position.xz - custom_material.center_pos.xz + vec2(0.5);
-    new_in.uv = parallaxMapping(ray, local_space, diff_depth);
+    new_in.uv = parallaxMapping(ray, local_space,  depth - in.position.z );
 
     var pbr_input = pbr_input_from_standard_material(new_in, is_front);
     pbr_input.material.base_color = alpha_discard(pbr_input.material, pbr_input.material.base_color);
@@ -61,9 +61,13 @@ fn fragment(in: VertexOutput,
     out.color = apply_pbr_lighting(pbr_input);
     out.color = main_pass_post_lighting_processing(pbr_input, out.color);
     
-    let color =  out.color.rgb;
 
-    let alpha = clamp(1.0 - diff_depth * 400.0, 0.0, 1.0);
+    //let alpha = smoothstep(0.0, 1.0, 1.0 - diff_depth * 400.0);
+    var alpha = min(clamp(1.0 - diff_depth * 300.0 , 0.0, 1.0), out.color.a);
+    let color =  out.color.rgb;
+    if alpha < 0.1 {
+      alpha = 0.0;
+    }
 
     // depth mask
     //return vec4(vec3(alpha), 1.0);
@@ -72,5 +76,5 @@ fn fragment(in: VertexOutput,
     //return vec4(color, 1.0);
 
     // regular
-    return vec4(color, alpha );
+    return vec4(color, alpha);
 }

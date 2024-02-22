@@ -39,7 +39,7 @@ fn setup(
         material: materials.add(Color::WHITE.into()),
         ..default()
     },));
-    for _ in 0..50 {
+    for _ in 0..150 {
         let x = thread_rng().gen_range(-1.2..1.2);
         let z = thread_rng().gen_range(-1.2..1.2);
         let rot_x = thread_rng().gen();
@@ -85,11 +85,61 @@ fn setup(
             transform: Transform::from_rotation(Quat::from_rotation_x(
                 -std::f32::consts::FRAC_PI_2,
             ))
-            .with_translation(Vec3::new(1.5, 0.1, 0.0)),
+            .with_translation(Vec3::new(1.5, 0.0, 0.0)),
             mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
             material: decal_materials.add(ExtendedMaterial {
                 base: StandardMaterial {
                     base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowReceiver,
+        NotShadowCaster,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(0.2, 0.0, 1.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color: Color::RED,
+                    base_color_texture: Some(asset_server.load("blast.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowReceiver,
+        NotShadowCaster,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(0.2, 0.0, -1.2)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color: Color::BLUE * 2.0,
+                    base_color_texture: Some(asset_server.load("boys.png")),
                     alpha_mode: AlphaMode::Blend,
                     ..default()
                 },
@@ -134,6 +184,54 @@ fn setup(
                 -std::f32::consts::FRAC_PI_2,
             ))
             .with_translation(Vec3::new(-2.0, -1.0, 0.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+        NotShadowReceiver,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(-1.0, 0.0, -1.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+        NotShadowReceiver,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(-1.0, 0.0, 1.0)),
             mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
             material: decal_materials.add(ExtendedMaterial {
                 base: StandardMaterial {
