@@ -20,7 +20,7 @@ struct Bob;
 
 fn bob(mut query: Query<&mut Transform, With<Bob>>, time: Res<Time>) {
     for mut transform in &mut query {
-        transform.translation.y = (time.elapsed_seconds() * 1.0).sin() / 4.0 + 0.2;
+        transform.translation.y = (time.elapsed_seconds() * 1.0).sin() / 4.0;
     }
 }
 
@@ -34,8 +34,8 @@ fn setup(
 ) {
     // circular base
     commands.spawn((PbrBundle {
-        transform: Transform::from_translation(-Vec3::Y * 0.25),
-        mesh: meshes.add(shape::Box::new(20.0, 0.5, 20.0).into()),
+        transform: Transform::default(),
+        mesh: meshes.add(shape::Plane::from_size(10.0).into()),
         material: materials.add(Color::WHITE.into()),
         ..default()
     },));
@@ -72,6 +72,86 @@ fn setup(
         material: materials.add(Color::WHITE.into()),
         ..default()
     },));
+
+    commands.spawn((PbrBundle {
+        transform: Transform::from_xyz(2.0, 0.5, 0.0),
+        mesh: meshes.add(shape::Cube::new(0.5).into()),
+        material: materials.add(Color::WHITE.into()),
+        ..default()
+    },));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(1.5, 0.1, 0.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowReceiver,
+        NotShadowCaster,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(2.0, 1.0, 0.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+        NotShadowReceiver,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(-2.0, -1.0, 0.0)),
+            mesh: meshes.add(shape::Quad::new(Vec2::splat(1.0)).into()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    color: Color::BLUE,
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+        NotShadowReceiver,
+    ));
+
     commands.spawn((
         Bob,
         MaterialMeshBundle {
