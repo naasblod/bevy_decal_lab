@@ -1,6 +1,6 @@
 use bevy::{
     core_pipeline::prepass::DepthPrepass,
-    pbr::{ExtendedMaterial, NotShadowCaster, NotShadowReceiver},
+    pbr::{ExtendedMaterial, NotShadowCaster},
     prelude::*,
 };
 use rand::{thread_rng, Rng};
