@@ -1,7 +1,6 @@
 use bevy::{
     pbr::{ExtendedMaterial, MaterialExtension, MaterialExtensionKey, MaterialExtensionPipeline},
     prelude::*,
-    reflect::TypeUuid,
     render::{
         mesh::MeshVertexBufferLayout,
         render_resource::{
@@ -14,10 +13,13 @@ use bevy::{
 pub struct DecalPlugin;
 impl Plugin for DecalPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugins(MaterialPlugin::<
-            ExtendedMaterial<StandardMaterial, DecalMaterial>,
-        >::default())
-            .add_systems(Update, update_center_position);
+        app.add_plugins(
+            MaterialPlugin::<ExtendedMaterial<StandardMaterial, DecalMaterial>> {
+                prepass_enabled: false,
+                ..default()
+            },
+        )
+        .add_systems(Update, update_center_position);
     }
 }
 
@@ -61,8 +63,7 @@ impl MaterialExtension for DecalMaterial {
 }
 
 // This is the struct that will be passed to your shader
-#[derive(Asset, AsBindGroup, TypeUuid, Debug, Clone, Reflect)]
-#[uuid = "b749082b-b220-414e-8a17-598407f2aeea"]
+#[derive(Asset, AsBindGroup, TypePath, Debug, Clone)]
 pub struct DecalMaterial {
     #[uniform(200)]
     pub center_pos: Vec3,
