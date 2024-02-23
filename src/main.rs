@@ -165,30 +165,6 @@ fn setup(
         NotShadowCaster,
     ));
 
-    commands.spawn((
-        Name::new("Moveme"),
-        MaterialMeshBundle {
-            transform: Transform::from_rotation(Quat::from_rotation_x(
-                -std::f32::consts::FRAC_PI_2,
-            ))
-            .with_translation(Vec3::new(1.0, 0.0, 0.0)),
-            mesh: meshes.add(mesh.clone()),
-            material: decal_materials.add(ExtendedMaterial {
-                base: StandardMaterial {
-                    base_color: Color::RED,
-                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
-                    alpha_mode: AlphaMode::Blend,
-                    ..default()
-                },
-                extension: DecalMaterial {
-                    center_pos: Vec3::default(),
-                },
-            }),
-            ..default()
-        },
-        NotShadowCaster,
-    ));
-
     // light
     commands.spawn(PointLightBundle {
         point_light: PointLight {
