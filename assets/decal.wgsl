@@ -26,8 +26,6 @@ struct CustomMaterial {
 @group(2) @binding(200)
 var<uniform> custom_material: CustomMaterial;
 
-
-
 @fragment
 fn fragment(in: VertexOutput,
     @builtin(front_facing) is_front: bool) -> @location(0) vec4<f32> {
