@@ -67,6 +67,4 @@ impl MaterialExtension for DecalMaterial {
 pub struct DecalMaterial {
     #[uniform(200)]
     pub center_pos: Vec3,
-    #[uniform(200)]
-    pub color: Color,
 }
