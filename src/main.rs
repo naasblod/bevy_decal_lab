@@ -23,7 +23,7 @@ fn main() {
         .add_plugins(DecalPlugin)
         .add_plugins(PanOrbitCameraPlugin)
         .add_systems(Startup, (setup,))
-        .add_systems(Update, (bob, inspector_ui))
+        .add_systems(Update, (bob, inspector_ui, move_camera))
         .run();
 }
 #[derive(Component)]
@@ -33,6 +33,30 @@ fn bob(mut query: Query<(&mut Transform, &Bob)>, time: Res<Time>) {
     for (mut transform, bob) in &mut query {
         transform.translation = bob.0 * (time.elapsed_seconds() * 1.0).sin() / 4.0 + bob.1;
     }
+}
+fn move_camera(
+    mut query: Query<&mut Transform, With<Camera>>,
+    input: Res<ButtonInput<KeyCode>>,
+    time: Res<Time>,
+) {
+    let x = if input.pressed(KeyCode::KeyA) {
+        -1.0
+    } else if input.pressed(KeyCode::KeyD) {
+        1.0
+    } else {
+        0.0
+    };
+
+    let z = if input.pressed(KeyCode::KeyW) {
+        -1.0
+    } else if input.pressed(KeyCode::KeyS) {
+        1.0
+    } else {
+        0.0
+    };
+    let mut transform = query.single_mut();
+    transform.translation.x += x * time.delta_seconds();
+    transform.translation.z += z * time.delta_seconds();
 }
 
 /// set up a simple 3D scene
@@ -118,7 +142,50 @@ fn setup(
     ));
 
     commands.spawn((
-        Bob(Vec3::X, Vec3::X),
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(0.0, 0.0, 1.0)),
+            mesh: meshes.add(mesh.clone()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+    ));
+
+    commands.spawn((
+        MaterialMeshBundle {
+            transform: Transform::from_rotation(Quat::from_rotation_x(
+                -std::f32::consts::FRAC_PI_2,
+            ))
+            .with_translation(Vec3::new(2.0, 0.0, 1.0)),
+            mesh: meshes.add(mesh.clone()),
+            material: decal_materials.add(ExtendedMaterial {
+                base: StandardMaterial {
+                    base_color_texture: Some(asset_server.load("UVCheckerMap01-512.png")),
+                    alpha_mode: AlphaMode::Blend,
+                    ..default()
+                },
+                extension: DecalMaterial {
+                    center_pos: Vec3::default(),
+                },
+            }),
+            ..default()
+        },
+        NotShadowCaster,
+    ));
+
+    commands.spawn((
         MaterialMeshBundle {
             transform: Transform::from_rotation(Quat::from_rotation_x(
                 -std::f32::consts::FRAC_PI_2,
@@ -142,7 +209,6 @@ fn setup(
     ));
 
     commands.spawn((
-        Bob(Vec3::Z, Vec3::Z),
         MaterialMeshBundle {
             transform: Transform::from_rotation(Quat::from_rotation_x(
                 -std::f32::consts::FRAC_PI_2,

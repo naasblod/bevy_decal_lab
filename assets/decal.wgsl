@@ -69,7 +69,8 @@ fn fragment(in: VertexOutput,
     out.color = apply_pbr_lighting(pbr_input);
     out.color = main_pass_post_lighting_processing(pbr_input, out.color);
 
-    var alpha = min(clamp(((1.0 - diff_depth_abs * 3.0)), 0.0, 1.0), out.color.a);
+    let fade_factor = 6.0;
+    var alpha = min(clamp(((1.0 - diff_depth_abs * fade_factor)), 0.0, 1.0), out.color.a);
 
     return vec4(out.color.rgb, alpha);
 }

@@ -10,10 +10,12 @@ The depth test is disabled so that decals that intersect with other geometry can
 
 This lab uses one step approximation parallax mapping, I think Alexander talked about parallax occlusion mapping in his talk ("A technique similar to parallax occlusion mapping"), maybe that needs some research. I have a feeling (literally only a feeling) that POM might eliminate the windowing issue that occurs when the quad is above the surface.
 
-### todos:
-* try this with a moving camera and hope nothing breaks.
-* figure out if parallax occlusion mapping would be better.
+In it's current state I think it's usable for fixed angle cameras since the effect will be deterministic, if you were to change the view vector the parts of the decal that are offset by geometry will shift (probably a skill issue on my part though). Further work is needed for being able to handle really steep angles when looking at the quad.
 
-Collaborated with NiseVoid
+### todos:
+* figure out if parallax occlusion mapping would be better.
+* figure out if it's possible to not have the world offset shift when rotating the camera
+
+Super big thanks to NiseVoid and Griffin
 
 uv checker map from https://github.com/Arahnoid/UVChecker-map
