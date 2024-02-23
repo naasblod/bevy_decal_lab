@@ -40,7 +40,9 @@ fn fragment(in: VertexOutput,
     let depth = prepass_depth(in.position, sample_index);
     let diff_depth = in.position.z - depth;
     let diff_depth_abs = abs(diff_depth);
+    let a = depth_ndc_to_view_z(in.position.z); 
+    let b = depth_ndc_to_view_z(prepass_depth(in.position, sample_index));
 
-    return vec4(vec3((1.0 - diff_depth_abs * 200.0 ) ),1.0);
+    return vec4(vec3((1.0 - vec3( a -b) )),1.0);
 
 }
