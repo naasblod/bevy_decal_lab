@@ -1,6 +1,9 @@
 # Contact Projective Decals
 from Alexander Sannikovs talk on the rendering techniques of Path of Exile
 
+now there's a library:
+`https://github.com/naasblod/bevy_contact_projective_decals/tree/main`
+
 <img width="856" alt="Image of a bunch of decals being projected on top of a bunch of boxes and stuff" src="https://github.com/naasblod/bevy_decal_lab/assets/51246882/85b17493-2428-41a1-9b54-83bf192fdc0a">
 
 ### Description
